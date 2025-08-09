@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(cuid())
+  username String   @unique
+  password String   // hashed
+}
+
+model Seller {
+  id        String   @id @default(cuid())
+  name      String
+  sales     Sale[]
+  createdAt DateTime @default(now())
+}
+
+model Sale {
+  id        String   @id @default(cuid())
+  sellerId  String
+  category  Category
+  month     Int
+  year      Int
+  unitsSold Int      @default(0)
+  target    Int      @default(0)
+  createdAt DateTime @default(now())
+
+  seller Seller @relation(fields: [sellerId], references: [id])
+
+  @@unique([sellerId, category, month, year])
+}
+
+
+enum Category {
+  CALZADO
+  NINO
+  INDUMENTARIA
+  ACCESORIOS
+}
