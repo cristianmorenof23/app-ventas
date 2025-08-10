@@ -30,11 +30,11 @@ export default function AddSellerForm({ onAdded }: { onAdded: () => void }) {
         required
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="w-full border px-3 py-2 rounded text-black focus:outline-none focus:ring-2 focus:ring-cyan-400"
+        className="border border-cyan-300 p-2 rounded-lg w-full bg-white focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent"
       />
       <button
         type="submit"
-        className="bg-cyan-600 text-white px-4 py-2 rounded hover:bg-cyan-700 w-full hover:cursor-pointer transition-all"
+        className="middle text-center none center w-full rounded-lg bg-cyan-500 py-4 px-6 font-sans text-sm font-bold uppercase text-white shadow-md shadow-cyan-500/20 transition-all hover:shadow-lg hover:shadow-cyan-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent"
       >
         Guardar
       </button>

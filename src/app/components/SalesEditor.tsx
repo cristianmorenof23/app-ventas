@@ -39,10 +39,12 @@ export default function SalesEditor({
   ];
 
   return (
-    <div className="bg-white rounded shadow p-6">
-      <h3 className="font-semibold mb-5 text-cyan-700 text-lg">Ventas (mes actual)</h3>
+    <div className="bg-white rounded-lg shadow-lg p-8 max-w-3xl mx-auto">
+      <h3 className="text-2xl font-semibold text-gray-800 text-center mb-8 tracking-tight">
+        Ventas (mes actual)
+      </h3>
 
-      <div className="space-y-6">
+      <div className="space-y-10">
         {categories.map((cat) => {
           const s = findSale(cat.key) ?? { unitsSold: 0, target: 0 };
           return (
@@ -56,44 +58,59 @@ export default function SalesEditor({
                 await upsertSale(formData);
                 router.refresh();
               }}
-              className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end"
+              className="bg-gray-50 rounded-xl shadow-md p-6 grid grid-cols-1 sm:grid-cols-5 gap-6 items-center"
             >
-              <div className="sm:col-span-1">
-                <label className="block text-sm font-medium text-cyan-700 select-none">
+              <div className="sm:col-span-1 flex justify-center items-center">
+                <label
+                  htmlFor={`unitsSold-${cat.key}`}
+                  className="text-lg font-medium text-gray-700 select-none"
+                >
                   {cat.label}
                 </label>
               </div>
 
-              <div>
-                <label className="block text-xs text-cyan-500 mb-1">Unidades vendidas</label>
+              <div className="sm:col-span-2 flex flex-col items-center">
+                <label
+                  htmlFor={`unitsSold-${cat.key}`}
+                  className="mb-2 text-sm text-gray-500"
+                >
+                  Unidades vendidas
+                </label>
                 <input
+                  id={`unitsSold-${cat.key}`}
                   name="unitsSold"
                   defaultValue={s.unitsSold}
                   type="number"
                   min={0}
-                  className="w-full border-2 border-cyan-300 rounded-md px-4 py-2 text-base text-gray-900 placeholder-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
+                  className="w-full max-w-[120px] border border-gray-300 rounded-md px-4 py-2 text-center text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                   placeholder="0"
                   required
                 />
               </div>
 
-              <div>
-                <label className="block text-xs text-cyan-500 mb-1">Objetivo</label>
+              <div className="sm:col-span-2 flex flex-col items-center">
+                <label
+                  htmlFor={`target-${cat.key}`}
+                  className="mb-2 text-sm text-gray-500"
+                >
+                  Objetivo
+                </label>
                 <input
+                  id={`target-${cat.key}`}
                   name="target"
                   defaultValue={s.target}
                   type="number"
                   min={0}
-                  className="w-full border-2 border-cyan-300 rounded-md px-4 py-2 text-base text-gray-900 placeholder-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition"
+                  className="w-full max-w-[120px] border border-gray-300 rounded-md px-4 py-2 text-center text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                   placeholder="0"
                   required
                 />
               </div>
 
-              <div className="sm:col-span-4 flex gap-3 mt-3 sm:mt-0">
+              <div className="sm:col-span-2 flex justify-center">
                 <button
                   type="submit"
-                  className="bg-cyan-600 hover:cursor-pointer hover:bg-cyan-700 text-white px-5 py-2 rounded-md text-sm transition"
+                  className="middle text-center none center rounded-lg bg-cyan-500 py-4 px-6 font-sans text-sm font-bold uppercase text-white shadow-md shadow-cyan-500/20 transition-all hover:shadow-lg hover:shadow-cyan-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent"
                 >
                   Guardar
                 </button>

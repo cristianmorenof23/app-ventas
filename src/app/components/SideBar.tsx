@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { deleteSeller, getSellers } from '@/app/actions/seller';
 import AddSellerForm from './AddSellerForm';
 
@@ -9,6 +9,7 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [sellers, setSellers] = useState<{ id: string; name: string }[]>([]);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     async function fetchSellers() {
@@ -28,8 +29,10 @@ export default function Sidebar() {
     setSellers(data);
   };
 
-  // Cierra el menú si clickeas fuera del sidebar en móvil
   const handleOverlayClick = () => setIsOpen(false);
+
+  // Extraemos el sellerId actual del path
+  const currentSellerId = pathname?.split('/dashboard/')[1] ?? null;
 
   return (
     <>
@@ -58,35 +61,42 @@ export default function Sidebar() {
           md:relative md:translate-x-0`}
         aria-label="Menú lateral de vendedores"
       >
-        <div className="p-4 font-bold text-lg border-b border-cyan-400 text-cyan-700 select-none">
+        <div className="p-6 font-extrabold text-2xl border-b border-cyan-400 text-cyan-700 select-none text-center tracking-wide">
           Vendedores
         </div>
 
-        <ul className="p-4 space-y-2 max-h-[calc(100vh-10rem)] overflow-y-auto">
-          {sellers.map((seller) => (
-            <li
-              key={seller.id}
-              className="flex items-center justify-between"
-            >
-              <span
-                className="text-cyan-600 cursor-pointer hover:underline hover:text-cyan-800"
-                onClick={() => {
-                  router.push(`/dashboard/${seller.id}`);
-                  setIsOpen(false); // cerrar menú en móvil al seleccionar vendedor
-                }}
-              >
-                {seller.name}
-              </span>
-              <button
-                onClick={() => handleDelete(seller.id)}
-                className="ml-2 text-red-500 hover:text-red-700 hover:cursor-pointer"
-                type="button"
-                aria-label={`Eliminar vendedor ${seller.name}`}
-              >
-                ×
-              </button>
-            </li>
-          ))}
+        <ul className="p-4 space-y-3 max-h-[calc(100vh-12rem)] overflow-y-auto">
+          {sellers.map((seller) => {
+            const isSelected = seller.id === currentSellerId;
+            return (
+              <li key={seller.id} className="flex items-center justify-between">
+                <span
+                  onClick={() => {
+                    router.push(`/dashboard/${seller.id}`);
+                    setIsOpen(false);
+                  }}
+                  className={`
+                    flex-grow text-center py-3 rounded-md font-semibold transition
+                    cursor-pointer select-none
+                    ${isSelected
+                      ? 'bg-cyan-700 text-white shadow-md'
+                      : 'text-cyan-600 hover:bg-cyan-100 hover:text-cyan-800'}
+                  `}
+                  aria-current={isSelected ? 'page' : undefined}
+                >
+                  {seller.name}
+                </span>
+                <button
+                  onClick={() => handleDelete(seller.id)}
+                  className="ml-3 text-red-500 hover:text-red-700 hover:cursor-pointer text-xl font-bold select-none"
+                  type="button"
+                  aria-label={`Eliminar vendedor ${seller.name}`}
+                >
+                  ×
+                </button>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="p-4 border-t border-cyan-300">
